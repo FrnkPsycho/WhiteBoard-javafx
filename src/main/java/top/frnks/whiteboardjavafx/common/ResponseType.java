@@ -4,6 +4,7 @@ public enum ResponseType {
     FILE,
     SNAPSHOT,
     ANSWER,
-    LOGIN_SUCCESS,
-    LOGOUT_SUCCESS,
+    BROADCAST_QUESTION,
+    BROADCAST_LOGIN,
+    BROADCAST_LOGOUT,
 }

@@ -2,6 +2,7 @@ package top.frnks.whiteboardjavafx;
 
 import top.frnks.whiteboardjavafx.common.Response;
 import top.frnks.whiteboardjavafx.common.ResponseType;
+import top.frnks.whiteboardjavafx.gui.GUIApplication;
 import top.frnks.whiteboardjavafx.util.ClientAction;
 
 import java.io.IOException;
@@ -22,9 +23,12 @@ public class ClientThread extends Thread {
 //                LOGGER.info("Received response from server: " + response + " " + responseType);
 
                 switch (responseType) {
-                    case LOGIN_SUCCESS -> ClientAction.handleLoginResponse(response);
-                    case FILE -> ClientAction.handleFileResponse(response);
+                    case BROADCAST_LOGIN -> ClientAction.handleLoginResponse(response);
+                    case BROADCAST_LOGOUT -> ClientAction.handleLogoutResponse(response);
+                    case BROADCAST_QUESTION -> ClientAction.handleQuestionResponse(response);
+                    case ANSWER -> ClientAction.handleAnswerResponse(response);
                     case SNAPSHOT -> ClientAction.handleSnapshotResponse(response);
+                    case FILE -> ClientAction.handleFileResponse(response);
                 }
             }
         } catch (IOException e) {

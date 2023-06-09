@@ -17,7 +17,7 @@ public class ServerAction {
 
         Student student = new Student(name, id);
 
-        Response response = new Response(ResponseType.LOGIN_SUCCESS);
+        Response response = new Response(ResponseType.BROADCAST_LOGIN);
         ServerDataBuffer.studentsList.add(student);
         ServerDataBuffer.serverClientIOMap.put(id, io);
 
@@ -35,7 +35,7 @@ public class ServerAction {
         ServerDataBuffer.serverClientIOMap.remove(student.id);
         GUIApplication.studentListView.refresh();
 
-        Response response = new Response(ResponseType.LOGOUT_SUCCESS);
+        Response response = new Response(ResponseType.BROADCAST_LOGOUT);
         response.setData("student", student);
         broadcastResponse(response);
 
@@ -45,6 +45,23 @@ public class ServerAction {
             throw new RuntimeException(e);
         }
         return false;
+    }
+    public static void question(Request request) {
+        String content = (String) request.getData("content");
+        Student student = (Student) request.getData("student");
+        Response response = new Response(ResponseType.BROADCAST_QUESTION);
+        response.setData("content", content);
+        response.setData("student", student);
+        broadcastResponse(response);
+
+        GUIApplication.addQuestion(student, content);
+    }
+    public static void answer(String content) {
+        Response response = new Response(ResponseType.ANSWER);
+        response.setData("content", content);
+        broadcastResponse(response);
+
+        GUIApplication.addAnswer(content);
     }
 //    public static void sendMouseEvent(MouseEvent event) {
 //        Response response = new Response(ResponseType.MOUSE_EVENT);

@@ -123,8 +123,20 @@ public class GUIApplication extends Application {
         QATypeArea.setScrollTop(Double.MAX_VALUE);
 
         Button sendButton;
-        if ( isServer ) sendButton = new Button("回复");
-        else sendButton = new Button("举手");
+        if ( isServer ) {
+            sendButton = new Button("回复");
+            sendButton.setOnAction(event -> {
+                ServerAction.answer(QATypeArea.getText());
+                QATypeArea.setText("");
+            });
+        }
+        else {
+            sendButton = new Button("举手");
+            sendButton.setOnAction(event -> {
+                ClientAction.question(QATypeArea.getText());
+                QATypeArea.setText("");
+            });
+        }
         sendButton.setPrefSize(50, 75);
         HBox typeBox = new HBox(QATypeArea, sendButton);
         typeBox.setSpacing(5.0);
@@ -152,6 +164,18 @@ public class GUIApplication extends Application {
     public void stop() {
         if ( !isServer ) ClientAction.logout();
         // TODO: server offline terminate?
+    }
+    public static void addTextToArea(String text) {
+        QATextArea.setText(QATextArea.getText() + "\n" + text);
+    }
+
+    public static void addQuestion(Student student, String content) {
+        String text = "学生" + student.name + ": " + content;
+        addTextToArea(text);
+    }
+    public static void addAnswer(String content) {
+        String text = "教师: " + content;
+        addTextToArea(text);
     }
 
     public static void clearCanvas() {

@@ -10,6 +10,25 @@ import java.io.IOException;
 import java.util.List;
 
 public class ClientAction {
+
+    public static void handleLogoutResponse(Response response) {
+        Student student = (Student) response.getData("student");
+        if ( student.id == ClientDataBuffer.currentStudent.id ) {
+            Platform.exit();
+        } else {
+            ClientDataBuffer.studentsList.removeIf(student1 -> student1.id == student.id);
+            GUIApplication.studentListView.refresh();
+        }
+    }
+    public static void handleAnswerResponse(Response response) {
+        String content = (String) response.getData("content");
+        GUIApplication.addAnswer(content);
+    }
+    public static void handleQuestionResponse(Response response) {
+        String content = (String) response.getData("content");
+        Student student = (Student) response.getData("student");
+        GUIApplication.addQuestion(student, content);
+    }
     public static void handleFileResponse(Response response) {
         FileContent fileContent = (FileContent) response.getData("file");
         GUIApplication.receiveFile(fileContent);
@@ -40,31 +59,33 @@ public class ClientAction {
 //    public static void handleClearCanvasResponse(Response response) {
 //        GUIApplication.clearCanvas();
 //    }
-    public static void raiseHand() {
+    public static void question(String content) {
+        Request request = new Request(RequestType.QUESTION);
+        request.setData("content", content);
+        request.setData("student", ClientDataBuffer.currentStudent);
 
+        sendRequest(request);
     }
+
     public static void login(String name, long id) {
         Request request = new Request(RequestType.LOGIN);
         request.setData("name", name);
         request.setData("id", id);
 
-        try {
-            sendRequest(request);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        sendRequest(request);
     }
     public static void logout() {
         Request request = new Request(RequestType.LOGOUT);
         request.setData("student", ClientDataBuffer.currentStudent);
+        sendRequest(request);
+    }
+    private static void sendRequest(Request request) {
         try {
-            sendRequest(request);
+            ClientDataBuffer.objectOutputStream.writeObject(request);
+            ClientDataBuffer.objectOutputStream.flush();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
-    private static void sendRequest(Request request) throws IOException {
-        ClientDataBuffer.objectOutputStream.writeObject(request);
-        ClientDataBuffer.objectOutputStream.flush();
-    }
+
 }
