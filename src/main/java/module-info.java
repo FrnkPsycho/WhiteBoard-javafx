@@ -11,4 +11,6 @@ module top.frnks.whiteboardjavafx {
     exports top.frnks.whiteboardjavafx.gui;
     exports top.frnks.whiteboardjavafx.common;
     opens top.frnks.whiteboardjavafx.gui to javafx.fxml;
+    exports top.frnks.whiteboardjavafx.gui.draw;
+    opens top.frnks.whiteboardjavafx.gui.draw to javafx.fxml;
 }

@@ -1,4 +1,4 @@
-package top.frnks.whiteboardjavafx.gui;
+package top.frnks.whiteboardjavafx.gui.draw;
 
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
@@ -15,5 +15,8 @@ public class Pen {
 
     public void setPenThickness(GraphicsContext graphicsContext, double thickness) {
         graphicsContext.setLineWidth(thickness);
+    }
+    public void setType(PenType penType) {
+        // TODO: other pen types
     }
 }

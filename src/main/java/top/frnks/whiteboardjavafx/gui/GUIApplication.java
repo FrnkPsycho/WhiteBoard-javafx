@@ -20,6 +20,8 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import top.frnks.whiteboardjavafx.*;
 import top.frnks.whiteboardjavafx.common.*;
+import top.frnks.whiteboardjavafx.gui.draw.Pen;
+import top.frnks.whiteboardjavafx.gui.draw.PenType;
 import top.frnks.whiteboardjavafx.util.ClientAction;
 import top.frnks.whiteboardjavafx.util.ServerAction;
 
@@ -92,7 +94,15 @@ public class GUIApplication extends Application {
             );
             penTypeComboBox.setItems(penTypes);
             penTypeComboBox.getSelectionModel().selectFirst();
-            // TODO: selectable pen type
+            penTypeComboBox.getSelectionModel().selectedItemProperty().addListener(((observable, oldValue, newValue) -> {
+                switch (newValue) {
+                    case "铅笔" -> pen.setType(PenType.PENCIL);
+                    case "线" -> pen.setType(PenType.LINE);
+                    case "圆" -> pen.setType(PenType.ROUND);
+                    case "矩形" -> pen.setType(PenType.RECT);
+                }
+                // TODO: not finished
+            }));
 
 //        clearButton.setPrefSize();
             clearButton.setOnAction(event -> GUIApplication.clearCanvas());
