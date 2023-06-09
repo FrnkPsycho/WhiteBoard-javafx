@@ -2,8 +2,7 @@ package top.frnks.whiteboardjavafx;
 
 import top.frnks.whiteboardjavafx.common.Response;
 import top.frnks.whiteboardjavafx.common.ResponseType;
-import top.frnks.whiteboardjavafx.controller.ClientAction;
-import top.frnks.whiteboardjavafx.gui.GUIApplication;
+import top.frnks.whiteboardjavafx.util.ClientAction;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;

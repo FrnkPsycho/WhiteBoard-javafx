@@ -1,8 +1,7 @@
 package top.frnks.whiteboardjavafx;
 
 import top.frnks.whiteboardjavafx.common.*;
-import top.frnks.whiteboardjavafx.controller.ServerAction;
-import top.frnks.whiteboardjavafx.gui.GUIApplication;
+import top.frnks.whiteboardjavafx.util.ServerAction;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;

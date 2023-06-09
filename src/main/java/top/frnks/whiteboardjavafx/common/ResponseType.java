@@ -3,7 +3,7 @@ package top.frnks.whiteboardjavafx.common;
 public enum ResponseType {
     FILE,
     SNAPSHOT,
-    CHAT,
+    ANSWER,
     LOGIN_SUCCESS,
     LOGOUT_SUCCESS,
 }

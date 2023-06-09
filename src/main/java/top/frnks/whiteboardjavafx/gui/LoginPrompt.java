@@ -9,11 +9,9 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import top.frnks.whiteboardjavafx.ClientDataBuffer;
-import top.frnks.whiteboardjavafx.ClientThread;
 import top.frnks.whiteboardjavafx.ServerDataBuffer;
-import top.frnks.whiteboardjavafx.ServerThread;
 import top.frnks.whiteboardjavafx.common.Student;
-import top.frnks.whiteboardjavafx.controller.ClientAction;
+import top.frnks.whiteboardjavafx.util.ClientAction;
 
 public class LoginPrompt {
     private static final VBox root = new VBox();

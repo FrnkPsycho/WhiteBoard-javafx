@@ -1,16 +1,11 @@
-package top.frnks.whiteboardjavafx.controller;
+package top.frnks.whiteboardjavafx.util;
 
 import javafx.application.Platform;
-import javafx.event.EventType;
-import javafx.scene.image.Image;
-import javafx.scene.input.MouseEvent;
 import top.frnks.whiteboardjavafx.ClientDataBuffer;
-import top.frnks.whiteboardjavafx.ServerClientIO;
 import top.frnks.whiteboardjavafx.common.*;
 import top.frnks.whiteboardjavafx.gui.GUIApplication;
 import top.frnks.whiteboardjavafx.gui.LoginPrompt;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
@@ -33,18 +28,18 @@ public class ClientAction {
             Platform.runLater(LoginPrompt.stage::close);
         }
     }
-    public static void handleMouseEventResponse(Response response) {
-        MouseEvent event = (MouseEvent) response.getData("event");
-        String eventType = event.getEventType().toString();
-        switch (eventType) {
-            case "MOUSE_PRESSED" -> GUIApplication.mousePressed(event);
-            case "MOUSE_DRAGGED" -> GUIApplication.mouseDragged(event);
-            case "MOUSE_RELEASED" -> GUIApplication.mouseReleased(event);
-        }
-    }
-    public static void handleClearCanvasResponse(Response response) {
-        GUIApplication.clearCanvas();
-    }
+//    public static void handleMouseEventResponse(Response response) {
+//        MouseEvent event = (MouseEvent) response.getData("event");
+//        String eventType = event.getEventType().toString();
+//        switch (eventType) {
+//            case "MOUSE_PRESSED" -> GUIApplication.mousePressed(event);
+//            case "MOUSE_DRAGGED" -> GUIApplication.mouseDragged(event);
+//            case "MOUSE_RELEASED" -> GUIApplication.mouseReleased(event);
+//        }
+//    }
+//    public static void handleClearCanvasResponse(Response response) {
+//        GUIApplication.clearCanvas();
+//    }
     public static void raiseHand() {
 
     }

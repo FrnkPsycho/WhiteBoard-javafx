@@ -1,13 +1,10 @@
-package top.frnks.whiteboardjavafx.controller;
+package top.frnks.whiteboardjavafx.util;
 
-import javafx.scene.image.Image;
-import javafx.scene.input.MouseEvent;
 import top.frnks.whiteboardjavafx.ServerClientIO;
 import top.frnks.whiteboardjavafx.ServerDataBuffer;
 import top.frnks.whiteboardjavafx.common.*;
 import top.frnks.whiteboardjavafx.gui.GUIApplication;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
