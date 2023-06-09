@@ -1,5 +1,6 @@
 package top.frnks.whiteboardjavafx.gui;
 
+import javafx.application.Platform;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.util.Callback;
@@ -12,8 +13,10 @@ public class StudentCellFactory implements Callback<ListView<Student>, ListCell<
             @Override
             public void updateItem(Student item, boolean empty) {
                 super.updateItem(item, empty);
-                if ( empty || item == null ) setText(null);
-                else setText(item.getDisplayName());
+                Platform.runLater(() -> {
+                    if ( empty || item == null ) setText(null);
+                    else setText(item.getDisplayName());
+                });
             }
         };
     }

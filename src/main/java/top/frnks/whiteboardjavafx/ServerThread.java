@@ -8,7 +8,7 @@ public class ServerThread extends Thread {
     @Override
     public void run() {
         Thread listenerThread = new Thread(() -> {
-            try (ServerSocket serverSocket = new ServerSocket(6657) ) {
+            try (ServerSocket serverSocket = new ServerSocket(2333) ) {
                 ServerDataBuffer.serverSocket = serverSocket;
                 while (true) {
                     Socket clientSocket = serverSocket.accept();

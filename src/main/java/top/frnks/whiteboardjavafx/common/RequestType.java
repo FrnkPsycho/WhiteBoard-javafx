@@ -4,4 +4,5 @@ public enum RequestType {
     RAISE_HAND,
     CHAT,
     LOGIN,
+    LOGOUT,
 }

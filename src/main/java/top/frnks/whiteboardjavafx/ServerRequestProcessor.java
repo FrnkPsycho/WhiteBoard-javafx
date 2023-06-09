@@ -29,6 +29,7 @@ public class ServerRequestProcessor implements Runnable{
                 RequestType requestType = request.getRequestType();
                 switch (requestType) {
                     case LOGIN -> ServerAction.login(currentIO, request);
+                    case LOGOUT -> listening = ServerAction.logout(currentIO, request, currentClientSocket);
                 }
             }
         } catch (IOException | ClassNotFoundException e) {

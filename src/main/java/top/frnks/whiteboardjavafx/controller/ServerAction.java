@@ -1,27 +1,26 @@
 package top.frnks.whiteboardjavafx.controller;
 
+import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import top.frnks.whiteboardjavafx.ServerClientIO;
 import top.frnks.whiteboardjavafx.ServerDataBuffer;
-import top.frnks.whiteboardjavafx.common.Request;
-import top.frnks.whiteboardjavafx.common.Response;
-import top.frnks.whiteboardjavafx.common.ResponseType;
-import top.frnks.whiteboardjavafx.common.Student;
+import top.frnks.whiteboardjavafx.common.*;
 import top.frnks.whiteboardjavafx.gui.GUIApplication;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
+import java.net.Socket;
 import java.util.List;
 
 public class ServerAction {
-    public static void login(ServerClientIO io, Request request) throws IOException {
+    public static void login(ServerClientIO io, Request request) {
         String name = (String) request.getData("name");
         long id = (long) request.getData("id");
 
         Student student = new Student(name, id);
 
         Response response = new Response(ResponseType.LOGIN_SUCCESS);
-        ServerDataBuffer.studentsMap.putIfAbsent(id, student);
         ServerDataBuffer.studentsList.add(student);
         ServerDataBuffer.serverClientIOMap.put(id, io);
 
@@ -33,41 +32,72 @@ public class ServerAction {
 
         GUIApplication.studentListView.refresh();
     }
-    public static void sendMouseEvent(MouseEvent event) {
-        Response response = new Response(ResponseType.MOUSE_EVENT);
-        response.setData("event", event);
+    public static boolean logout(ServerClientIO io, Request request, Socket socket) {
+        Student student = (Student) request.getData("student");
+        ServerDataBuffer.studentsList.removeIf(student1 -> student1.id == student.id);
+        ServerDataBuffer.serverClientIOMap.remove(student.id);
+        GUIApplication.studentListView.refresh();
+
+        Response response = new Response(ResponseType.LOGOUT_SUCCESS);
+        response.setData("student", student);
+        broadcastResponse(response);
+
         try {
-            broadcastResponse(response);
+            socket.close();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
+        return false;
     }
-    public static void clearCanvas() {
-        GUIApplication.clearCanvas();
-        Response response = new Response(ResponseType.CLEAR_CANVAS);
-        try {
-            broadcastResponse(response);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+//    public static void sendMouseEvent(MouseEvent event) {
+//        Response response = new Response(ResponseType.MOUSE_EVENT);
+//        response.setData("event", event);
+//        try {
+//            broadcastResponse(response);
+//        } catch (IOException e) {
+//            throw new RuntimeException(e);
+//        }
+//    }
+
+//    public static void clearCanvas() {
+//        GUIApplication.clearCanvas();
+//        Response response = new Response(ResponseType.CLEAR_CANVAS);
+//        broadcastResponse(response);
+//    }
+
+    public static void sendSnapshot(SerializableImage image) {
+        Response response = new Response(ResponseType.SNAPSHOT);
+        response.setData("snapshot", image);
+        broadcastResponse(response);
     }
 
-    public static void sendFile() {
-        // TODO: send file to student
+    public static void sendFile(FileContent fileContent, Student student) {
+        Response response = new Response(ResponseType.FILE);
+        response.setData("file", fileContent);
+        ServerClientIO io = ServerDataBuffer.serverClientIOMap.get(student.id);
+        sendResponse(io, response);
     }
 
-    private static void sendResponse(ServerClientIO io, Response response) throws IOException {
+    private static void sendResponse(ServerClientIO io, Response response) {
         ObjectOutputStream oos = io.getObjectOutputStream();
-        oos.writeObject(response);
-        oos.flush();
-    }
-
-    private static void broadcastResponse(Response response) throws IOException {
-        for ( var io : ServerDataBuffer.serverClientIOMap.values() ) {
-            ObjectOutputStream oos = io.getObjectOutputStream();
+        try {
             oos.writeObject(response);
             oos.flush();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private static void broadcastResponse(Response response) {
+        if ( ServerDataBuffer.studentsList.isEmpty() ) return;
+        for ( var io : ServerDataBuffer.serverClientIOMap.values() ) {
+            ObjectOutputStream oos = io.getObjectOutputStream();
+            try {
+                oos.writeObject(response);
+                oos.flush();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 }

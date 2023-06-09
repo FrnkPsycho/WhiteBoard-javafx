@@ -14,23 +14,23 @@ public class ClientThread extends Thread {
     public static final Logger LOGGER = Logger.getGlobal();
     @Override
     public void run() {
-        connectToServer("localhost", 6657);
+        connectToServer("localhost", 2333);
         boolean listening = true;
         try {
             while (listening) {
                 Response response = (Response) ClientDataBuffer.objectInputStream.readObject();
                 ResponseType responseType = response.getResponseType();
-                LOGGER.info("Received response from server: " + response + " " + responseType);
+//                LOGGER.info("Received response from server: " + response + " " + responseType);
 
                 switch (responseType) {
                     case LOGIN_SUCCESS -> ClientAction.handleLoginResponse(response);
-                    case CLEAR_CANVAS -> ClientAction.handleClearCanvasResponse(response);
-                    case MOUSE_EVENT -> ClientAction.handleMouseEventResponse(response);
+                    case FILE -> ClientAction.handleFileResponse(response);
+                    case SNAPSHOT -> ClientAction.handleSnapshotResponse(response);
                 }
             }
         } catch (IOException e) {
             LOGGER.warning("IO Error");
-            connectToServer("localhost", 6657);
+            connectToServer("localhost", 2333);
         } catch (ClassNotFoundException e) {
             throw new RuntimeException(e);
         }

@@ -10,6 +10,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import top.frnks.whiteboardjavafx.ClientDataBuffer;
 import top.frnks.whiteboardjavafx.ClientThread;
+import top.frnks.whiteboardjavafx.ServerDataBuffer;
 import top.frnks.whiteboardjavafx.ServerThread;
 import top.frnks.whiteboardjavafx.common.Student;
 import top.frnks.whiteboardjavafx.controller.ClientAction;
@@ -25,13 +26,13 @@ public class LoginPrompt {
         Button studentButton = new Button("学生端");
         teacherButton.setOnAction(event -> {
             GUIApplication.isServer = true;
-            new ServerThread().start();
+            ServerDataBuffer.serverThread.start();
             stage.close();
         });
         studentButton.setOnAction(event -> {
-            new ClientThread().start();
+            ClientDataBuffer.clientThread.start();
             try {
-                Thread.sleep(500);
+                Thread.sleep(200);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }

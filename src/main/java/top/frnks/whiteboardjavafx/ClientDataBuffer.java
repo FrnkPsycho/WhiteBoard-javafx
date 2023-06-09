@@ -16,6 +16,7 @@ public class ClientDataBuffer {
     public static ObjectOutputStream objectOutputStream;
     public static String clientIp;
     public static Student currentStudent;
+    public static Thread clientThread = new ClientThread();
     public static ObservableList<Student> studentsList = FXCollections.observableArrayList();
     public static boolean isOnline = false;
     public static boolean isConnected = false;
