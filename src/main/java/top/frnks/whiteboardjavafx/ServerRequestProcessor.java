@@ -1,7 +1,8 @@
 package top.frnks.whiteboardjavafx;
 
-import top.frnks.whiteboardjavafx.common.Request;
-import top.frnks.whiteboardjavafx.common.RequestType;
+import top.frnks.whiteboardjavafx.common.*;
+import top.frnks.whiteboardjavafx.controller.ServerAction;
+import top.frnks.whiteboardjavafx.gui.GUIApplication;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -27,11 +28,12 @@ public class ServerRequestProcessor implements Runnable{
                 request = (Request) currentIO.getObjectInputStream().readObject();
                 RequestType requestType = request.getRequestType();
                 switch (requestType) {
-                    // TODO
+                    case LOGIN -> ServerAction.login(currentIO, request);
                 }
             }
         } catch (IOException | ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
     }
+
 }

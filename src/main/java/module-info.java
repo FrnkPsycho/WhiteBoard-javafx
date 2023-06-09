@@ -1,7 +1,9 @@
 module top.frnks.whiteboardjavafx {
     requires javafx.controls;
     requires javafx.fxml;
+    requires javafx.swing;
     requires java.logging;
+    requires java.desktop;
 
 
     opens top.frnks.whiteboardjavafx to javafx.fxml;

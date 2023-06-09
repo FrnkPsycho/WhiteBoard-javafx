@@ -2,6 +2,8 @@ package top.frnks.whiteboardjavafx;
 
 import top.frnks.whiteboardjavafx.common.Response;
 import top.frnks.whiteboardjavafx.common.ResponseType;
+import top.frnks.whiteboardjavafx.controller.ClientAction;
+import top.frnks.whiteboardjavafx.gui.GUIApplication;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -20,9 +22,11 @@ public class ClientThread extends Thread {
                 ResponseType responseType = response.getResponseType();
                 LOGGER.info("Received response from server: " + response + " " + responseType);
 
-//                switch (responseType) {
-//                    case CLEAR_CANVAS ->
-//                }
+                switch (responseType) {
+                    case LOGIN_SUCCESS -> ClientAction.handleLoginResponse(response);
+                    case CLEAR_CANVAS -> ClientAction.handleClearCanvasResponse(response);
+                    case MOUSE_EVENT -> ClientAction.handleMouseEventResponse(response);
+                }
             }
         } catch (IOException e) {
             LOGGER.warning("IO Error");
@@ -37,6 +41,7 @@ public class ClientThread extends Thread {
             ClientDataBuffer.clientSocket = new Socket(remote, port);
             ClientDataBuffer.objectOutputStream = new ObjectOutputStream(ClientDataBuffer.clientSocket.getOutputStream());
             ClientDataBuffer.objectInputStream = new ObjectInputStream(ClientDataBuffer.clientSocket.getInputStream());
+            ClientDataBuffer.isConnected = true;
             LOGGER.info("Connected to " + remote + ":" + port);
         } catch (IOException e) {
             LOGGER.warning("Unable to connect to server: \"" + remote + ":" + port + "\"");
